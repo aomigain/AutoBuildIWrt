@@ -9,11 +9,11 @@ echo "Create pppoe-settings"
 mkdir -p  /home/build/immortalwrt/files/etc/config
 
 # 创建pppoe配置文件 yml传入环境变量ENABLE_PPPOE等 写入配置文件 供99-custom.sh读取
-#cat << EOF > /home/build/immortalwrt/files/etc/config/pppoe-settings
-#enable_pppoe=${ENABLE_PPPOE}
-#pppoe_account=${PPPOE_ACCOUNT}
-#pppoe_password=${PPPOE_PASSWORD}
-#EOF
+cat << EOF > /home/build/immortalwrt/files/etc/config/pppoe-settings
+enable_pppoe=${ENABLE_PPPOE}
+pppoe_account=${PPPOE_ACCOUNT}
+pppoe_password=${PPPOE_PASSWORD}
+EOF
 
 echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/config/pppoe-settings
@@ -42,10 +42,10 @@ PACKAGES="$PACKAGES script-utils"
 PACKAGES="$PACKAGES luci-i18n-samba4-zh-cn"
 
 # 判断是否需要编译 Docker 插件
-#if [ "$INCLUDE_DOCKER" = "yes" ]; then
-#    PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
-#    echo "Adding package: luci-i18n-dockerman-zh-cn"
-#fi
+if [ "$INCLUDE_DOCKER" = "yes" ]; then
+    PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
+    echo "Adding package: luci-i18n-dockerman-zh-cn"
+fi
 
 # 构建镜像
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:"
