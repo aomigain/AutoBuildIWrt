@@ -40,19 +40,17 @@ if [ "$count" -eq 1 ]; then
    # 单网口设备 不支持修改ip 不要在此处修改ip 
    uci set network.lan.proto='dhcp'
 elif [ "$count" -gt 1 ]; then
-   # 提取第一个接口作为WAN
-   wan_ifname=$(echo "$ifnames" | awk '{print $1}')
-   # 剩余接口保留给LAN
-   lan_ifnames=$(echo "$ifnames" | cut -d ' ' -f2-)
-   # 设置WAN接口基础配置
-   uci set network.wan=interface
-   # 提取第一个接口作为WAN
-   uci set network.wan.device="$wan_ifname"
-   # WAN接口默认DHCP
-   uci set network.wan.proto='dhcp'
-   # 设置WAN6绑定网口eth0
-   uci set network.wan6=interface
-   uci set network.wan6.device="$wan_ifname"
+   # 提取第一个接口作为LAN
+   lan_ifname=$(echo "$ifnames" | awk '{print $1}')
+   # 剩余接口保留给WAN
+   wan_ifnames=$(echo "$ifnames" | cut -d ' ' -f2-)
+   # 设置LAN接口基础配置
+   uci set network.lan=interface
+   # 提取第一个接口作为LAN
+   uci set network.lan.device="$lan_ifname"
+   # 设置LAN绑定网口eth0
+   uci set network.lan=interface
+   uci set network.lan.device="$wan_ifname"
    # 更新LAN接口成员
    # 查找对应设备的section名称
    section=$(uci show network | awk -F '[.=]' '/\.@?device\[\d+\]\.name=.br-lan.$/ {print $2; exit}')
@@ -75,6 +73,10 @@ elif [ "$count" -gt 1 ]; then
    # 情况二旁路由如果是多网口设备，也应当用网关访问网页后，在自行在web网页里设置。总之大家不能直接在代码里修改旁路网关。千万不要徒增bug啦。
    uci set network.lan.ipaddr='10.0.0.2'
    uci set network.lan.netmask='255.255.255.0'
+   uci set network.lan.gateway '10.0.0.1'
+   uci set network.lan.delegate '0'
+   uci set network.lan.device 'eth0'
+   uci set network.lan.ip6assign '64'
    echo "set 192.168.100.1 at $(date)" >> $LOGFILE
    # 判断是否启用 PPPoE
    echo "print enable_pppoe value=== $enable_pppoe" >> $LOGFILE
