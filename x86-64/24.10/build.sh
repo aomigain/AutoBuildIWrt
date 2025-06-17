@@ -38,8 +38,6 @@ PACKAGES="$PACKAGES luci-i18n-passwall-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-smartdns-zh-cn"
 PACKAGES="$PACKAGES luci-app-ddns-go"
 PACKAGES="$PACKAGES luci-app-socat"
-PACKAGES="$PACKAGES luci-app-turboacc"
-PACKAGES="$PACKAGES luci-app-advancedplus"
 # 增加几个必备组件 方便用户安装iStore
 PACKAGES="$PACKAGES fdisk"
 PACKAGES="$PACKAGES script-utils"
